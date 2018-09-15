@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TetrisBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Colors">
+          <Key>
+            <PropertyRef Name="IdColorP" />
+          </Key>
+          <Property Name="IdColorP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColorName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fields">
+          <Key>
+            <PropertyRef Name="IdField" />
+          </Key>
+          <Property Name="IdField" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSavePoint" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Figures">
+          <Key>
+            <PropertyRef Name="IdFig" />
+          </Key>
+          <Property Name="IdFig" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdFigureType" Type="int" />
+          <Property Name="IdSavePoint" Type="int" Nullable="false" />
+          <Property Name="CurrentFig" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FigurTypes">
+          <Key>
+            <PropertyRef Name="IdFigureType" />
+          </Key>
+          <Property Name="IdFigureType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FigName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Points">
+          <Key>
+            <PropertyRef Name="IdPoint" />
+          </Key>
+          <Property Name="IdPoint" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdField" Type="int" />
+          <Property Name="IdFig" Type="int" />
+          <Property Name="IdColorP" Type="int" Nullable="false" />
+          <Property Name="X" Type="tinyint" Nullable="false" />
+          <Property Name="Y" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SavePoints">
+          <Key>
+            <PropertyRef Name="IdSavePoint" />
+          </Key>
+          <Property Name="IdSavePoint" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdField" Type="int" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="BurnedLine" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FIELDS_RELATIONS_SAVEPOIN">
+          <End Role="SavePoints" Type="Self.SavePoints" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Fields" Type="Self.Fields" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SavePoints">
+              <PropertyRef Name="IdSavePoint" />
+            </Principal>
+            <Dependent Role="Fields">
+              <PropertyRef Name="IdSavePoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIGURES_RELATIONS_FIGURTYP">
+          <End Role="FigurTypes" Type="Self.FigurTypes" Multiplicity="0..1" />
+          <End Role="Figures" Type="Self.Figures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FigurTypes">
+              <PropertyRef Name="IdFigureType" />
+            </Principal>
+            <Dependent Role="Figures">
+              <PropertyRef Name="IdFigureType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIGURES_RELATIONS_SAVEPOIN">
+          <End Role="SavePoints" Type="Self.SavePoints" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Figures" Type="Self.Figures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SavePoints">
+              <PropertyRef Name="IdSavePoint" />
+            </Principal>
+            <Dependent Role="Figures">
+              <PropertyRef Name="IdSavePoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POINTS_RELATIONS_COLORS">
+          <End Role="Colors" Type="Self.Colors" Multiplicity="1" />
+          <End Role="Points" Type="Self.Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Colors">
+              <PropertyRef Name="IdColorP" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdColorP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POINTS_RELATIONS_FIELDS">
+          <End Role="Fields" Type="Self.Fields" Multiplicity="0..1" />
+          <End Role="Points" Type="Self.Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fields">
+              <PropertyRef Name="IdField" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POINTS_RELATIONS_FIGURES">
+          <End Role="Figures" Type="Self.Figures" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Points" Type="Self.Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Figures">
+              <PropertyRef Name="IdFig" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdFig" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAVEPOIN_RELATIONS_FIELDS">
+          <End Role="Fields" Type="Self.Fields" Multiplicity="0..1" />
+          <End Role="SavePoints" Type="Self.SavePoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fields">
+              <PropertyRef Name="IdField" />
+            </Principal>
+            <Dependent Role="SavePoints">
+              <PropertyRef Name="IdField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TetrisBaseModelStoreContainer">
+          <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fields" EntityType="Self.Fields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Figures" EntityType="Self.Figures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FigurTypes" EntityType="Self.FigurTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SavePoints" EntityType="Self.SavePoints" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FIELDS_RELATIONS_SAVEPOIN" Association="Self.FK_FIELDS_RELATIONS_SAVEPOIN">
+            <End Role="SavePoints" EntitySet="SavePoints" />
+            <End Role="Fields" EntitySet="Fields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIGURES_RELATIONS_FIGURTYP" Association="Self.FK_FIGURES_RELATIONS_FIGURTYP">
+            <End Role="FigurTypes" EntitySet="FigurTypes" />
+            <End Role="Figures" EntitySet="Figures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIGURES_RELATIONS_SAVEPOIN" Association="Self.FK_FIGURES_RELATIONS_SAVEPOIN">
+            <End Role="SavePoints" EntitySet="SavePoints" />
+            <End Role="Figures" EntitySet="Figures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POINTS_RELATIONS_COLORS" Association="Self.FK_POINTS_RELATIONS_COLORS">
+            <End Role="Colors" EntitySet="Colors" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POINTS_RELATIONS_FIELDS" Association="Self.FK_POINTS_RELATIONS_FIELDS">
+            <End Role="Fields" EntitySet="Fields" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POINTS_RELATIONS_FIGURES" Association="Self.FK_POINTS_RELATIONS_FIGURES">
+            <End Role="Figures" EntitySet="Figures" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAVEPOIN_RELATIONS_FIELDS" Association="Self.FK_SAVEPOIN_RELATIONS_FIELDS">
+            <End Role="Fields" EntitySet="Fields" />
+            <End Role="SavePoints" EntitySet="SavePoints" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TetrisBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="IdColorP" />
+          </Key>
+          <Property Name="IdColorP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Points" Relationship="Self.FK_POINTS_RELATIONS_COLORS" FromRole="Colors" ToRole="Points" />
+        </EntityType>
+        <EntityType Name="Field">
+          <Key>
+            <PropertyRef Name="IdField" />
+          </Key>
+          <Property Name="IdField" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSavePoint" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SavePoints" Relationship="Self.FK_FIELDS_RELATIONS_SAVEPOIN" FromRole="Fields" ToRole="SavePoints" />
+          <NavigationProperty Name="Points" Relationship="Self.FK_POINTS_RELATIONS_FIELDS" FromRole="Fields" ToRole="Points" />
+          <NavigationProperty Name="SavePoints1" Relationship="Self.FK_SAVEPOIN_RELATIONS_FIELDS" FromRole="Fields" ToRole="SavePoints" />
+        </EntityType>
+        <EntityType Name="Figure">
+          <Key>
+            <PropertyRef Name="IdFig" />
+          </Key>
+          <Property Name="IdFig" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdFigureType" Type="Int32" />
+          <Property Name="IdSavePoint" Type="Int32" Nullable="false" />
+          <Property Name="CurrentFig" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FigurTypes" Relationship="Self.FK_FIGURES_RELATIONS_FIGURTYP" FromRole="Figures" ToRole="FigurTypes" />
+          <NavigationProperty Name="SavePoints" Relationship="Self.FK_FIGURES_RELATIONS_SAVEPOIN" FromRole="Figures" ToRole="SavePoints" />
+          <NavigationProperty Name="Points" Relationship="Self.FK_POINTS_RELATIONS_FIGURES" FromRole="Figures" ToRole="Points" />
+        </EntityType>
+        <EntityType Name="FigurType">
+          <Key>
+            <PropertyRef Name="IdFigureType" />
+          </Key>
+          <Property Name="IdFigureType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FigName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Figures" Relationship="Self.FK_FIGURES_RELATIONS_FIGURTYP" FromRole="FigurTypes" ToRole="Figures" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="IdPoint" />
+          </Key>
+          <Property Name="IdPoint" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdField" Type="Int32" />
+          <Property Name="IdFig" Type="Int32" />
+          <Property Name="IdColorP" Type="Int32" Nullable="false" />
+          <Property Name="X" Type="Byte" Nullable="false" />
+          <Property Name="Y" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Colors" Relationship="Self.FK_POINTS_RELATIONS_COLORS" FromRole="Points" ToRole="Colors" />
+          <NavigationProperty Name="Fields" Relationship="Self.FK_POINTS_RELATIONS_FIELDS" FromRole="Points" ToRole="Fields" />
+          <NavigationProperty Name="Figures" Relationship="Self.FK_POINTS_RELATIONS_FIGURES" FromRole="Points" ToRole="Figures" />
+        </EntityType>
+        <EntityType Name="SavePoint">
+          <Key>
+            <PropertyRef Name="IdSavePoint" />
+          </Key>
+          <Property Name="IdSavePoint" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdField" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="BurnedLine" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fields" Relationship="Self.FK_FIELDS_RELATIONS_SAVEPOIN" FromRole="SavePoints" ToRole="Fields" />
+          <NavigationProperty Name="Fields1" Relationship="Self.FK_SAVEPOIN_RELATIONS_FIELDS" FromRole="SavePoints" ToRole="Fields" />
+          <NavigationProperty Name="Figures" Relationship="Self.FK_FIGURES_RELATIONS_SAVEPOIN" FromRole="SavePoints" ToRole="Figures" />
+        </EntityType>
+        <Association Name="FK_POINTS_RELATIONS_COLORS">
+          <End Role="Colors" Type="TetrisBaseModel.Color" Multiplicity="1" />
+          <End Role="Points" Type="TetrisBaseModel.Point" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Colors">
+              <PropertyRef Name="IdColorP" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdColorP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIELDS_RELATIONS_SAVEPOIN">
+          <End Role="SavePoints" Type="TetrisBaseModel.SavePoint" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Fields" Type="TetrisBaseModel.Field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SavePoints">
+              <PropertyRef Name="IdSavePoint" />
+            </Principal>
+            <Dependent Role="Fields">
+              <PropertyRef Name="IdSavePoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POINTS_RELATIONS_FIELDS">
+          <End Role="Fields" Type="TetrisBaseModel.Field" Multiplicity="0..1" />
+          <End Role="Points" Type="TetrisBaseModel.Point" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fields">
+              <PropertyRef Name="IdField" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAVEPOIN_RELATIONS_FIELDS">
+          <End Role="Fields" Type="TetrisBaseModel.Field" Multiplicity="0..1" />
+          <End Role="SavePoints" Type="TetrisBaseModel.SavePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fields">
+              <PropertyRef Name="IdField" />
+            </Principal>
+            <Dependent Role="SavePoints">
+              <PropertyRef Name="IdField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIGURES_RELATIONS_FIGURTYP">
+          <End Role="FigurTypes" Type="TetrisBaseModel.FigurType" Multiplicity="0..1" />
+          <End Role="Figures" Type="TetrisBaseModel.Figure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FigurTypes">
+              <PropertyRef Name="IdFigureType" />
+            </Principal>
+            <Dependent Role="Figures">
+              <PropertyRef Name="IdFigureType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FIGURES_RELATIONS_SAVEPOIN">
+          <End Role="SavePoints" Type="TetrisBaseModel.SavePoint" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Figures" Type="TetrisBaseModel.Figure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SavePoints">
+              <PropertyRef Name="IdSavePoint" />
+            </Principal>
+            <Dependent Role="Figures">
+              <PropertyRef Name="IdSavePoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POINTS_RELATIONS_FIGURES">
+          <End Role="Figures" Type="TetrisBaseModel.Figure" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Points" Type="TetrisBaseModel.Point" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Figures">
+              <PropertyRef Name="IdFig" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="IdFig" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TetrisDataContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Colors" EntityType="TetrisBaseModel.Color" />
+          <EntitySet Name="Fields" EntityType="TetrisBaseModel.Field" />
+          <EntitySet Name="Figures" EntityType="TetrisBaseModel.Figure" />
+          <EntitySet Name="FigurTypes" EntityType="TetrisBaseModel.FigurType" />
+          <EntitySet Name="Points" EntityType="TetrisBaseModel.Point" />
+          <EntitySet Name="SavePoints" EntityType="TetrisBaseModel.SavePoint" />
+          <AssociationSet Name="FK_POINTS_RELATIONS_COLORS" Association="Self.FK_POINTS_RELATIONS_COLORS">
+            <End Role="Colors" EntitySet="Colors" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIELDS_RELATIONS_SAVEPOIN" Association="Self.FK_FIELDS_RELATIONS_SAVEPOIN">
+            <End Role="SavePoints" EntitySet="SavePoints" />
+            <End Role="Fields" EntitySet="Fields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POINTS_RELATIONS_FIELDS" Association="Self.FK_POINTS_RELATIONS_FIELDS">
+            <End Role="Fields" EntitySet="Fields" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAVEPOIN_RELATIONS_FIELDS" Association="Self.FK_SAVEPOIN_RELATIONS_FIELDS">
+            <End Role="Fields" EntitySet="Fields" />
+            <End Role="SavePoints" EntitySet="SavePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIGURES_RELATIONS_FIGURTYP" Association="Self.FK_FIGURES_RELATIONS_FIGURTYP">
+            <End Role="FigurTypes" EntitySet="FigurTypes" />
+            <End Role="Figures" EntitySet="Figures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FIGURES_RELATIONS_SAVEPOIN" Association="Self.FK_FIGURES_RELATIONS_SAVEPOIN">
+            <End Role="SavePoints" EntitySet="SavePoints" />
+            <End Role="Figures" EntitySet="Figures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POINTS_RELATIONS_FIGURES" Association="Self.FK_POINTS_RELATIONS_FIGURES">
+            <End Role="Figures" EntitySet="Figures" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TetrisBaseModelStoreContainer" CdmEntityContainer="TetrisDataContext">
+          <EntitySetMapping Name="Colors">
+            <EntityTypeMapping TypeName="TetrisBaseModel.Color">
+              <MappingFragment StoreEntitySet="Colors">
+                <ScalarProperty Name="IdColorP" ColumnName="IdColorP" />
+                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fields">
+            <EntityTypeMapping TypeName="TetrisBaseModel.Field">
+              <MappingFragment StoreEntitySet="Fields">
+                <ScalarProperty Name="IdField" ColumnName="IdField" />
+                <ScalarProperty Name="IdSavePoint" ColumnName="IdSavePoint" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Figures">
+            <EntityTypeMapping TypeName="TetrisBaseModel.Figure">
+              <MappingFragment StoreEntitySet="Figures">
+                <ScalarProperty Name="IdFig" ColumnName="IdFig" />
+                <ScalarProperty Name="IdFigureType" ColumnName="IdFigureType" />
+                <ScalarProperty Name="IdSavePoint" ColumnName="IdSavePoint" />
+                <ScalarProperty Name="CurrentFig" ColumnName="CurrentFig" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FigurTypes">
+            <EntityTypeMapping TypeName="TetrisBaseModel.FigurType">
+              <MappingFragment StoreEntitySet="FigurTypes">
+                <ScalarProperty Name="IdFigureType" ColumnName="IdFigureType" />
+                <ScalarProperty Name="FigName" ColumnName="FigName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Points">
+            <EntityTypeMapping TypeName="TetrisBaseModel.Point">
+              <MappingFragment StoreEntitySet="Points">
+                <ScalarProperty Name="IdPoint" ColumnName="IdPoint" />
+                <ScalarProperty Name="IdField" ColumnName="IdField" />
+                <ScalarProperty Name="IdFig" ColumnName="IdFig" />
+                <ScalarProperty Name="IdColorP" ColumnName="IdColorP" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SavePoints">
+            <EntityTypeMapping TypeName="TetrisBaseModel.SavePoint">
+              <MappingFragment StoreEntitySet="SavePoints">
+                <ScalarProperty Name="IdSavePoint" ColumnName="IdSavePoint" />
+                <ScalarProperty Name="IdField" ColumnName="IdField" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="BurnedLine" ColumnName="BurnedLine" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

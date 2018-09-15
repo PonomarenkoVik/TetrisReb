@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d4af15b378f34c9b812917d1b0385021" Name="Diagram1">
+        <EntityTypeShape EntityType="TetrisBaseModel.Color" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TetrisBaseModel.Field" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TetrisBaseModel.Figure" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="TetrisBaseModel.FigurType" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TetrisBaseModel.Point" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TetrisBaseModel.SavePoint" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <AssociationConnector Association="TetrisBaseModel.FK_POINTS_RELATIONS_COLORS" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_FIELDS_RELATIONS_SAVEPOIN" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_POINTS_RELATIONS_FIELDS" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_SAVEPOIN_RELATIONS_FIELDS" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_FIGURES_RELATIONS_FIGURTYP" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_FIGURES_RELATIONS_SAVEPOIN" ManuallyRouted="false" />
+        <AssociationConnector Association="TetrisBaseModel.FK_POINTS_RELATIONS_FIGURES" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
