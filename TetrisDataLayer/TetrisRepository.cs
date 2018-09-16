@@ -1,72 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TetrisAbstract;
 using TetrisAbstract.Enum;
+using TetrisDataLayer.Extensions;
 
 namespace TetrisDataLayer
 {
     public class TetrisRepository : TetrisDataContext, IDataTetrisRepository
     {
-        public bool Save(TetrisSavePoint point, TColor[,] field, TetrisFigure currentFigure, TetrisFigure nextFigure)
-        {
-            throw new NotImplementedException();
+
+        #region Save section
+
+        public void Save(GameBoardData point, FigureData currentFigureData, FigureData nextFigureData)
+        {           
+            int idSavePoint = AddSavePoint(point);
+            AddField(point.Field, idSavePoint);
+            AddFigure(currentFigureData, idSavePoint, true);
+            AddFigure(nextFigureData, idSavePoint, false);          
         }
 
-
-        private int AddSavePoint(TetrisSavePoint savePoint)
+        private int AddSavePoint(GameBoardData gameBoardData)
         {
-            SavePoint savP = new SavePoint();
-            var sp = SavePoints.Add(savePoint.ToSavePoint());
+            var sp = SavePoints.Add(gameBoardData.ToSavePoint());
             SaveChanges();
             return sp.IdSavePoint;
         }
 
-        private int AddField(TColor[,] fPoints, int savePoint)
+        private void AddField(TColor[,] field, int savePoint)
         {
-            Field f = new Field();
-            f.IdSavePoint = savePoint;
-            var field = Fields.Add(f);
+            var f = new Field
+            {
+                IdSavePoint = savePoint
+            };
+            Fields.Add(f);
             SaveChanges();
-            return field.IdField;
+            AddFieldPoints(field, f.IdField);
         }
 
-        private void AddPoints(TColor[,] fPoints, int idField)
+        private void AddFieldPoints(TColor[,] field, int idField)
         {
-            for (byte i = 0; i < fPoints.GetLength(1); i++)
+            for (byte i = 0; i < field.GetLength(1); i++)
             {
-                for (byte j = 0; j < fPoints.GetLength(0); j++)
+                for (byte j = 0; j < field.GetLength(0); j++)
                 {
-                    Point p = new Point();
-                    p.IdField = idField;
-                    p.IdColorP = (int)fPoints[j, i];
-                    p.X = j;
-                    p.Y = i;
+                    Point p = new Point
+                    {
+                        IdField = idField,
+                        IdColorP = (int) field[j, i],
+                        X = j,
+                        Y = i
+                    };
                     Points.Add(p);
-                }               
+                }
+            }
+            SaveChanges(); // ????????????
+        }
+
+
+        private void AddFigure(FigureData figureData, int idSavePoint, bool isCurrent)
+        {
+            Figure fig = figureData.ToFigure();
+            fig.IdSavePoint = idSavePoint;
+            fig.CurrentFig = isCurrent;
+            Figures.Add(fig);
+            SaveChanges();
+            AddFigurePoints(figureData, fig.IdFig);
+        }
+
+        private void AddFigurePoints(FigureData figureData, int idFigure)
+        {
+            byte[,] body = figureData.Body;
+            for (int i = 0; i < FigureData.FigurePoints; i++)
+            {
+                byte x = (byte)body[0, i];
+                byte y = (byte)body[1, i];
+                Point point = new Point
+                {
+                    X = x,
+                    Y = y,
+                    IdColorP = (int) figureData.Color,
+                    IdFig = idFigure
+                };
+                Points.Add(point);
             }
             SaveChanges();
         }
 
-        private void AddFigure(TetrisFigure fig, int savePoint)
-        {
-           Figure fig = fig.
-        }
+        #endregion
 
 
 
 
+        #region Read section
 
 
-        public List<TetrisSavePoint> GetSavePoints()
+        public List<GameBoardData> GetSavePoints()
         {
             return SavePoints.ToList().ToSavePoints();
         }
 
-        public BoardPoint[,] GetField(int idField)
+        public GameBoardData GetGameBoard(int idSavePoint)
+        {
+            SavePoint savePoint = (from point in SavePoints
+                where point.IdSavePoint == idSavePoint
+                select point).First();
+            int? idField = savePoint.IdField;
+            GameBoardData boardData = savePoint.ToTetrisGameBoard();
+            boardData.Field = GetField(idField);
+            return boardData;
+        }
+
+        public TColor[,] GetField(int? idField)
         {
             var points = from p in Points
                 where p.IdField == idField
@@ -74,42 +119,17 @@ namespace TetrisDataLayer
             return points.ToList().ToTetrisField();
         }
 
-        public TetrisFigure GetCurrentFigure(int idSavePoint)
+        public FigureData GetFigure(int idSavePoint, bool isCurrent)
         {
-            var qFigure = (from f in Figures
-                         where f.IdSavePoint == idSavePoint
-                         where f.CurrentFig == true
-                         select f).ToList();
-           
-            TetrisFigure fig;
-            if (qFigure.Count == 1)
-	        {
-		       fig = qFigure[0].ToTetrisFigure();  
-	        }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            var fig = (from f in Figures
+                where f.IdSavePoint == idSavePoint
+                where f.CurrentFig == isCurrent
+                select f).First().ToTetrisFigure(); 
             return fig;
-        }
+        }  
 
-        public TetrisFigure GetNextFigure(int idSavePoint)
-        {
-            var qFigure = (from f in Figures
-                           where f.IdSavePoint == idSavePoint
-                           where f.CurrentFig != true
-                           select f).ToList();
+        #endregion
 
-            TetrisFigure fig;
-            if (qFigure.Count == 1)
-            {
-                fig = qFigure[0].ToTetrisFigure();
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-            return fig;
-        }
+        
     }
 }

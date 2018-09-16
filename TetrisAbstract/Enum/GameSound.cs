@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace TetrisAbstract.Enum
 {
-    public enum FigureTypes
+    public enum GameSound
     {
-        LeftG = 1,
-        RightG,
-        LeftZigzag,
-        RightZigzag,
-        LetterT,
-        Square,
-        Stick
+        BurnLine,
+        Step,
+        Turning
     }
 }
