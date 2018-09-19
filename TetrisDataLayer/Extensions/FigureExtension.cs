@@ -11,11 +11,11 @@ namespace TetrisDataLayer.Extensions
     public static class FigureExtension
     {
 
-        public static FigureData ToTetrisFigure(this Figure sourceFigure)
+        public static FigureData ToTetrisFigure(this Figure source)
         {
-            FigureData figureData = new FigureData();
+            FigureData fData = new FigureData();
             int[,] body = new int[2, FigureData.FigurePoints];
-            List<Point> bodyPoints = sourceFigure.Points.ToList();
+            List<Point> bodyPoints = source.Points.ToList();
             int index = 0;
             foreach (var point in bodyPoints)
             {
@@ -23,13 +23,13 @@ namespace TetrisDataLayer.Extensions
                 body[1, index] = point.Y;
                 index++;
             }
-            figureData.Color = (TColor)bodyPoints[0].Colors.IdColorP;
-            int? type = sourceFigure.IdFigureType;
+            fData.Color = (TColor)bodyPoints[0].Colors.IdColorP;
+            int? type = source.IdFigureType;
             if (type != null)
             {
-                figureData.Type = (FigureTypes)type;
+                fData.Type = (FigureTypes)type;
             }
-            return figureData;
+            return fData;
         }
 
 

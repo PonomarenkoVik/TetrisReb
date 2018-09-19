@@ -7,7 +7,7 @@ using TetrisAbstract.Enum;
 
 namespace TetrisAbstract
 {
-    public interface IDataTetrisRepository : IDisposable
+    public interface IDataTetrisRepository
     {
         void Save(GameBoardData point, FigureData currentFigureData, FigureData nextFigureData);
         List<GameBoardData> GetSavePoints();
