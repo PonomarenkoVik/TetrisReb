@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
+using TetrisAbstract.EventArgs;
 
 namespace TetrisAbstract.Interfaces
 {
     public interface ITetrisLogic
     {
-        void DeleteEmptyPoint(Figure currentFigure);
-        void Turn(GameBoardData gameBoard, Figure currentFigure);
-        void Move(GameBoardData gameBoard, Figure currentFigure, Direction dir);
-
         event Action ExchangeFigureEvent;
         event Action LevelUpEvent;
-        event Action GameOverEvent;
+        event Action GOverEvent;
+        event EventHandler<SoundEventArgs> SndEvent;
+        void DeleteEmptyPoint(Figure currentFigure);
+        void Turn(GameBoardData gameBoard, Figure figure);
+        void Move(GameBoardData gameBoard, Figure currentFigure, Direction dir);
     }
 }

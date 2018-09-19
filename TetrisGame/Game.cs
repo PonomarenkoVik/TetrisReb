@@ -13,23 +13,37 @@ using TetrisGame.Extensions;
 
 namespace TetrisGame
 {
-    public class Game : ITetrisGame, IDisposable
+    public class Game : ITetrisGame
     {
         public Game(IDataTetrisRepository repository, ITetrisLogic logic)
-        {
-            _gameBoard = new GameBoardData();
+        {           
             _repository = repository;
             _logic = logic;
+            _gameBoard = new GameBoardData();
             _figCreator = new FigureCreator();
-            _logic.ExchangeFigureEvent += ExchangeFigureEventFigures;
-            _logic.LevelUpEvent += LevelUpEvent;
-            _logic.GameOverEvent += GameOver;
-        }
 
+            Subscribe();
+        }
 
         public event Action GameOverEvent;
         public event EventHandler<UpdateEventArgs> UpdateDataEvent;
         public event EventHandler<SoundEventArgs> SoundEvent;
+
+        private void Subscribe()
+        {
+            _logic.ExchangeFigureEvent += ExchangeFigureEventFigures;
+            _logic.LevelUpEvent += LevelUpEvent;
+
+            if (GameOverEvent != null)
+            {
+                _logic.GOverEvent += GameOverEvent;
+            }
+            if (SoundEvent != null)
+            {
+                _logic.SndEvent += SoundEvent;
+            }
+        }
+
 
 
         public void Start()
@@ -77,14 +91,6 @@ namespace TetrisGame
         }
 
         #endregion
-
-
-        public void Dispose()
-        {
-            _repository.Dispose();
-        }
-
-
 
 
 
@@ -145,13 +151,7 @@ namespace TetrisGame
             _velocity = LevelData.GetVelocity(_gameBoard.Level);
         }
 
-        private void GameOver()
-        {
-            if (GameOverEvent != null)
-            {
-                GameOverEvent();
-            }      
-        }
+       
 
 
 

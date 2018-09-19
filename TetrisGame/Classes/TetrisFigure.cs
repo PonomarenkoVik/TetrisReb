@@ -10,7 +10,7 @@ namespace TetrisGame.Classes
 {
     internal class TetrisFigure : Figure
     {
-        public TetrisFigure(string name, FigureTypes type, bool isTurnable, TColor color, byte[,] body) : base(name, type, isTurnable, color, body)
+        public TetrisFigure(string name, FigureTypes type, bool isRotatable, TColor color, byte[,] body) : base(name, type, isRotatable, color, body)
         {
         }
 

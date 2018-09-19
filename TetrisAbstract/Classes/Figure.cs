@@ -10,11 +10,11 @@ namespace TetrisAbstract.Classes
     public abstract class Figure : ICloneable
     {
 
-        protected Figure(string name, FigureTypes type, bool isTurnable, TColor color, byte[,] body)
+        protected Figure(string name, FigureTypes type, bool isRotatable, TColor color, byte[,] body)
         {
             Color = color;
             _body = (byte[,])body.Clone();
-            IsTurnable = isTurnable;
+            IsRotatable = isRotatable;
             Name = name;
             FigureType = type;
         }
@@ -34,7 +34,7 @@ namespace TetrisAbstract.Classes
             }
         }
 
-        public bool IsTurnable { get; private set; }
+        public bool IsRotatable { get; private set; }
         public virtual FigureTypes FigureType { get; private set; }
 
         public virtual object Clone()
