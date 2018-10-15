@@ -39,22 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BoardPoint.cs" />
-    <Compile Include="Classes\Figure.cs" />
-    <Compile Include="Classes\TetrisInitialData.cs" />
+    <Compile Include="Extension\SavePointExtension.cs" />
+    <Compile Include="GameClasses\BoardPoint.cs" />
+    <Compile Include="GameClasses\Figure.cs" />
+    <Compile Include="GameClasses\TetrisInitialData.cs" />
     <Compile Include="Enum\Direction.cs" />
     <Compile Include="Enum\FigureTypes.cs" />
-    <Compile Include="Enum\GameSound.cs" />
+    <Compile Include="Enum\TypeAction.cs" />
     <Compile Include="Enum\TColor.cs" />
-    <Compile Include="EventArgs\SoundEventArgs.cs" />
+    <Compile Include="EventArgs\ActionEventArgs.cs" />
     <Compile Include="EventArgs\UpdateEventArgs.cs" />
     <Compile Include="Interfaces\IDataTetrisRepository.cs" />
     <Compile Include="Interfaces\ITetrisGame.cs" />
     <Compile Include="Interfaces\ITetrisLogic.cs" />
     <Compile Include="Interfaces\ITetrisSaveable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\FigureData.cs" />
-    <Compile Include="Classes\GameBoardData.cs" />
+    <Compile Include="GameClasses\FigureData.cs" />
+    <Compile Include="GameClasses\GameBoardData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

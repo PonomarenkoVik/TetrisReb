@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
+using TetrisAbstract.GameClasses;
 
-namespace TetrisDataLayer
+namespace TetrisDataLayer.Extensions
 {
     public static class SavePointExtension
     {

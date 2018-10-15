@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract.Enum;
+﻿using System.Collections.Generic;
+using TetrisAbstract.GameClasses;
 
-namespace TetrisAbstract
+namespace TetrisAbstract.Interfaces
 {
     public interface IDataTetrisRepository
     {
-        void Save(GameBoardData point, FigureData currentFigureData, FigureData nextFigureData);
+        void Save(GameBoardData point, FigureData currentFigure, FigureData nextFigureData);
         List<GameBoardData> GetSavePoints();
         GameBoardData GetGameBoard(int idSavePoint);
         FigureData GetFigure(int idSavePoint, bool isCurrent);

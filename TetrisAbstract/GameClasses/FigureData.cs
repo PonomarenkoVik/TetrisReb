@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TetrisAbstract.Enum;
 
-namespace TetrisAbstract
+namespace TetrisAbstract.GameClasses
 {
-    public class FigureData
+    public class FigureData : ICloneable
     {
         public const int HeightWidth = 4;
         public const int FigurePoints = 4;
@@ -17,5 +13,11 @@ namespace TetrisAbstract
         public bool IsCurrent { get; set; }
         public byte[,] Body { get; set; }
         public FigureTypes Type { get; set; }
+        public object Clone()
+        {
+            FigureData fig = (FigureData)MemberwiseClone();
+            fig.Body = (byte[,])Body.Clone();
+            return fig;
+        }
     }
 }

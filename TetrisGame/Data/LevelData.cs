@@ -1,51 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
+using TetrisAbstract.GameClasses;
 
-namespace TetrisGame.Classes
+namespace TetrisGame.Data
 {
     internal static class LevelData
     {
 
-        private static Random rnd = new Random();
+        private static readonly Random Rnd = new Random();
         public static float GetVelocity(int level)
         {
             return LevelVelocity[level];
         }
 
-        public static TColor[,] GetLevelFilling(int level)
+        public static void GetLevelFilling(GameBoardData board)
         {
-            return FillBoardByLevel(level);
-        }
-
-
-
-        private static TColor[,] FillBoardByLevel(int level)
-        {
-            byte[,] fillLevel = FillingOfLevels[level];
-            TColor[,] field = new TColor[TetrisInitialData.FieldWidth, TetrisInitialData.FieldHeight];
-            for (int i = TetrisInitialData.FieldHeight - 1; i >= 0; i--)
+            byte[,] fillLevel = FillingOfLevels[board.Level];
+            if (fillLevel != null)
             {
-                for (int j = 0; j < TetrisInitialData.FieldWidth; j++)
+
+                for (int i = fillLevel.GetLength(0) - 1; i >= 0; i--)
                 {
-                    if (fillLevel[i, j] == 1)
+                    for (int j = 0; j < TetrisInitialData.FieldWidth; j++)
                     {
-                        //entering the points of the figure into the Field of the structure board
-                        field[j, (TetrisInitialData.FieldHeight - 1) - i] = (TColor)(rnd.Next(0, TetrisInitialData.NumberOfColors));
+
+                        if (fillLevel[i, j] == 1)
+                        {
+                            //entering the points of the figure into the Field of the structure board
+                            board.Field[j, (TetrisInitialData.FieldHeight - 1) - i] =
+                                (TColor)(Rnd.Next(0, TetrisInitialData.NumberOfColors));
+                        }
                     }
                 }
             }
-
-            return field;
         }
-
-
-
 
 
         #region Data for game levels

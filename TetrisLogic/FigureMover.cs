@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
 using TetrisAbstract.EventArgs;
+using TetrisAbstract.GameClasses;
 
 namespace TetrisLogic
 {
@@ -17,7 +13,7 @@ namespace TetrisLogic
         public event Action GmOverEvent;
         public event Action ExchFigEvent;
         public event Action LvlUpEvent;
-        public event EventHandler<SoundEventArgs> SoundEvent;
+        public event EventHandler<ActionEventArgs> StepEvent;
         public event Action<GameBoardData> BurnLine;
 
 
@@ -27,7 +23,10 @@ namespace TetrisLogic
             {
                 if (FigureMove(dir, currentFigure, gameBoard))
                 {
-                    Sound();
+                    if (StepEvent != null)
+                    {
+                        StepEvent(this, new ActionEventArgs(TypeAction.Step, dir));
+                    }
                 }
                 else
                 {
@@ -57,15 +56,18 @@ namespace TetrisLogic
                         {
                             GmOverEvent();
                         }
-                    }              
+                    }
                 }
             }
             else
             {
                 if (FigureMove(dir, currentFigure, gameBoard))
                 {
-                    Sound(); 
-                } 
+                    if (StepEvent != null)
+                    {
+                        StepEvent(this, new ActionEventArgs(TypeAction.Step, dir));
+                    }
+                }
             }
         }
 
@@ -245,14 +247,5 @@ namespace TetrisLogic
             }
             return result;
         }
-
-        private void Sound()
-        {
-            if (SoundEvent != null)
-            {
-                SoundEvent(this, new SoundEventArgs(GameSound.Step));
-            }
-        }
-        
     }
 }

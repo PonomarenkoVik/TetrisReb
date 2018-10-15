@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
 using TetrisAbstract.EventArgs;
+using TetrisAbstract.GameClasses;
 
 namespace TetrisAbstract.Interfaces
 {
@@ -14,9 +10,9 @@ namespace TetrisAbstract.Interfaces
         event Action ExchangeFigureEvent;
         event Action LevelUpEvent;
         event Action GOverEvent;
-        event EventHandler<SoundEventArgs> SndEvent;
+        event Action<ActionEventArgs> ActionEvent;
         void DeleteEmptyPoint(Figure currentFigure);
         void Turn(GameBoardData gameBoard, Figure figure);
-        void Move(GameBoardData gameBoard, Figure currentFigure, Direction dir);
+        void Move(GameBoardData gameBoard, ref Figure currentFigure, Direction dir);
     }
 }

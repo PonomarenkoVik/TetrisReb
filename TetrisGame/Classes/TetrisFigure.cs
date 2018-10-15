@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract.Classes;
-using TetrisAbstract.Enum;
+﻿using TetrisAbstract.Enum;
+using TetrisAbstract.GameClasses;
 
 namespace TetrisGame.Classes
 {
     internal class TetrisFigure : Figure
     {
-        public TetrisFigure(string name, FigureTypes type, bool isRotatable, TColor color, byte[,] body) : base(name, type, isRotatable, color, body)
+        public TetrisFigure(FigureTypes type, bool isRotatable, TColor color, byte[,] body) : base(type, isRotatable, color, body)
         {
         }
 

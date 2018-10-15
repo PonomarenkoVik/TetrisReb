@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
-using TetrisAbstract.EventArgs;
+using TetrisAbstract.GameClasses;
 
 namespace TetrisLogic
 {
@@ -17,7 +11,7 @@ namespace TetrisLogic
             _height = TetrisInitialData.FieldHeight;
             _width = TetrisInitialData.FieldWidth;
         }
-        public event EventHandler<SoundEventArgs> SoundEvent;
+        public event Action BurnLineEvent;
         public void Burn(GameBoardData board)
         {
             for (int i = 0; i < _height; i++)
@@ -47,9 +41,9 @@ namespace TetrisLogic
             }
             board.Score += 100;
             board.BurnedLine += 1;
-            if (SoundEvent != null)
+            if (BurnLineEvent != null)
             {
-                SoundEvent(this, new SoundEventArgs(GameSound.BurnLine));
+                BurnLineEvent();
             }
         }
 

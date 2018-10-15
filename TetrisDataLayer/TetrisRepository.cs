@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using TetrisAbstract;
 using TetrisAbstract.Enum;
+using TetrisAbstract.GameClasses;
+using TetrisAbstract.Interfaces;
 using TetrisDataLayer.Extensions;
 
 namespace TetrisDataLayer
@@ -14,20 +14,21 @@ namespace TetrisDataLayer
 
         public void Save(GameBoardData point, FigureData currentFigureData, FigureData nextFigureData)
         {           
-            int idSavePoint = AddSavePoint(point);
-            AddField(point.Field, idSavePoint);
-            AddFigure(currentFigureData, idSavePoint, true);
-            AddFigure(nextFigureData, idSavePoint, false);          
+            SavePoint savePoint = AddSavePoint(point);
+            int idField = AddField(point.Field, savePoint.IdSavePoint);
+            savePoint.IdField = idField;
+            AddFigure(currentFigureData, savePoint.IdSavePoint, true);
+            AddFigure(nextFigureData, savePoint.IdSavePoint, false);          
         }
 
-        private int AddSavePoint(GameBoardData gameBoardData)
+        private SavePoint AddSavePoint(GameBoardData gameBoardData)
         {
             var sp = SavePoints.Add(gameBoardData.ToSavePoint());
             SaveChanges();
-            return sp.IdSavePoint;
+            return sp;
         }
 
-        private void AddField(TColor[,] field, int savePoint)
+        private int AddField(TColor[,] field, int savePoint)
         {
             var f = new Field
             {
@@ -36,6 +37,7 @@ namespace TetrisDataLayer
             Fields.Add(f);
             SaveChanges();
             AddFieldPoints(field, f.IdField);
+            return f.IdField;
         }
 
         private void AddFieldPoints(TColor[,] field, int idField)
@@ -44,14 +46,17 @@ namespace TetrisDataLayer
             {
                 for (byte j = 0; j < field.GetLength(0); j++)
                 {
-                    Point p = new Point
+                    if (field[j, i] != TColor.Empty)
                     {
-                        IdField = idField,
-                        IdColorP = (int) field[j, i],
-                        X = j,
-                        Y = i
-                    };
-                    Points.Add(p);
+                        Point p = new Point
+                        {
+                            IdField = idField,
+                            IdColorP = (int)field[j, i],
+                            X = j,
+                            Y = i
+                        };
+                        Points.Add(p);
+                    }
                 }
             }
             SaveChanges(); // ????????????
@@ -73,8 +78,8 @@ namespace TetrisDataLayer
             byte[,] body = figureData.Body;
             for (int i = 0; i < FigureData.FigurePoints; i++)
             {
-                byte x = (byte)body[0, i];
-                byte y = (byte)body[1, i];
+                byte x = body[i, 0];
+                byte y = body[i, 1];
                 Point point = new Point
                 {
                     X = x,
@@ -97,7 +102,7 @@ namespace TetrisDataLayer
 
         public List<GameBoardData> GetSavePoints()
         {
-            return SavePoints.ToList().ToSavePoints();
+            return SavePoints.OrderByDescending( s => s.Date).ToList().ToSavePoints();
         }
 
         public GameBoardData GetGameBoard(int idSavePoint)

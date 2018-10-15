@@ -15,8 +15,8 @@ namespace TetrisDataLayer
     
     public partial class TetrisDataContext : DbContext
     {
-        public TetrisDataContext()
-            : base("name=TetrisDataContext")
+        public TetrisDataContext(string connString = "name=TetrisDataContext")
+            : base(connString)
         {
         }
     

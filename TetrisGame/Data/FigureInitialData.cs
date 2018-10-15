@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TetrisGame.Classes
+﻿
+namespace TetrisGame.Data
 {
     internal static class FigureInitialData
     {
@@ -21,18 +16,6 @@ namespace TetrisGame.Classes
             true,   //right Г 
             true,   //left  Г
             true    // Т
-        };
-
-        internal static readonly string[] FigureNames =
-        {
-            "Square",
-            "Stick",
-            "Left zigzag",
-            "Right zigzag",
-            "Right Г",
-            "Left Г",
-            "T figure"
-
         };
 
         internal static readonly byte[][,] BodyFigures =

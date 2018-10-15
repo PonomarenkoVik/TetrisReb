@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TetrisAbstract.Enum;
 using TetrisAbstract.EventArgs;
 
@@ -12,7 +8,7 @@ namespace TetrisAbstract.Interfaces
     {
         event Action GameOverEvent;
         event EventHandler<UpdateEventArgs> UpdateDataEvent;
-        event EventHandler<SoundEventArgs> SoundEvent;
+        event Action<ActionEventArgs> ActionEvent;
 
         void Start();      
         void Move(Direction dir);

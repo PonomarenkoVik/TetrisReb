@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TetrisAbstract.Enum;
 
-namespace TetrisAbstract.Classes
+namespace TetrisAbstract.GameClasses
 {
     public abstract class Figure : ICloneable
     {
 
-        protected Figure(string name, FigureTypes type, bool isRotatable, TColor color, byte[,] body)
+        protected Figure(FigureTypes type, bool isRotatable, TColor color, byte[,] body)
         {
             Color = color;
             _body = (byte[,])body.Clone();
             IsRotatable = isRotatable;
-            Name = name;
             FigureType = type;
         }
-        public virtual string Name { get; private set; }
 
         public virtual TColor Color { get; private set; }
 
@@ -26,11 +20,11 @@ namespace TetrisAbstract.Classes
         {
             get
             {
-                return (byte[,])_body.Clone();
+                return _body;
             }
             set
             {
-                _body = (byte[,])value.Clone();
+                _body = value;
             }
         }
 

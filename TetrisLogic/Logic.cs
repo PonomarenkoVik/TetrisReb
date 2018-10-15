@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
 using TetrisAbstract.EventArgs;
+using TetrisAbstract.GameClasses;
 using TetrisAbstract.Interfaces;
 
 namespace TetrisLogic
@@ -21,33 +16,73 @@ namespace TetrisLogic
             Subscribe();
         }
 
-      
-
         public event Action ExchangeFigureEvent;
         public event Action LevelUpEvent;
         public event Action GOverEvent;
-        public event EventHandler<SoundEventArgs> SndEvent;
+        public event Action<ActionEventArgs> ActionEvent;
 
         private void Subscribe()
         {
+            _rotator.RotateEvent += OnRotateHandler;
+            _mover.StepEvent += OnStepHandler;
+            _mover.BurnLine += OnBurnHandler;
+            _burner.BurnLineEvent += OnBurnedHandler;
+            _mover.GmOverEvent += OnGOverHandler;
+            _mover.ExchFigEvent += OnExchangeFigureHandler;
+            _mover.LvlUpEvent += OnLevelUpHandler;
+        }
+
+        private void OnLevelUpHandler()
+        {
             if (LevelUpEvent != null)
             {
-                _mover.LvlUpEvent += LevelUpEvent;
+                LevelUpEvent();
             }
+        }
 
+        private void OnExchangeFigureHandler()
+        {
             if (ExchangeFigureEvent != null)
             {
-                _mover.ExchFigEvent += ExchangeFigureEvent;
+                ExchangeFigureEvent();
             }
+        }
 
+        private void OnGOverHandler()
+        {
             if (GOverEvent != null)
             {
-                _mover.GmOverEvent += GOverEvent;
+                GOverEvent();
             }
-            _rotator.SoundEvent += SndEvent;
-            _mover.SoundEvent += SndEvent;
-            _mover.BurnLine += _burner.Burn;
-            _burner.SoundEvent += SndEvent;
+        }
+
+        private void OnBurnedHandler()
+        {
+            if (ActionEvent != null)
+            {
+                ActionEvent(new ActionEventArgs(TypeAction.BurnLine));
+            }
+        }
+
+        private void OnBurnHandler(GameBoardData gameBoard)
+        {
+            _burner.Burn(gameBoard);
+        }
+
+        private void OnStepHandler(object sender, ActionEventArgs e)
+        {
+            if (ActionEvent != null)
+            {
+                ActionEvent(e);
+            }
+        }
+
+        private void OnRotateHandler()
+        {
+            if (ActionEvent != null)
+            {
+                ActionEvent(new ActionEventArgs(TypeAction.Turning));
+            }
         }
 
 
@@ -64,22 +99,21 @@ namespace TetrisLogic
             for (int i = 0; i < FigureData.FigurePoints; i++)
             {
                 currentFigure.Body[i, 1] -= (byte)num;
-                currentFigure.Body[i, 0] += (FigureData.HeightWidth/2) + 1;
+                currentFigure.Body[i, 0] += (FigureData.HeightWidth / 2) + 1;
             }
         }
 
         public void Turn(GameBoardData gameBoard, Figure figure)
         {
             _rotator.Turn(gameBoard, figure);
-            _rotator.SoundEvent += SndEvent;
         }
 
-        public void Move(GameBoardData gameBoard, Figure currentFigure, Direction dir)
+        public void Move(GameBoardData gameBoard, ref Figure currentFigure, Direction dir)
         {
             _mover.Move(gameBoard, ref currentFigure, dir);
         }
 
-       
+
         private readonly FigureRotator _rotator;
         private readonly FigureMover _mover;
         private readonly Burner _burner;

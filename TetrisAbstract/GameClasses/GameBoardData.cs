@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TetrisAbstract.Enum;
 
-namespace TetrisAbstract
+namespace TetrisAbstract.GameClasses
 {
-    public class GameBoardData
+    public class GameBoardData : ICloneable
     {
         public int IdSavePoint { get; set; }
         public int IdField { get; set; }
@@ -16,5 +12,11 @@ namespace TetrisAbstract
         public int BurnedLine { get; set; }
         public int Score { get; set; }
         public TColor[,] Field { get; set; }
+        public object Clone()
+        {
+            GameBoardData board = (GameBoardData)MemberwiseClone();
+            board.Field = (TColor[,])Field.Clone();
+            return board;
+        }
     }
 }

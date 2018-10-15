@@ -1,8 +1,6 @@
 ﻿using System;
-using TetrisAbstract;
-using TetrisAbstract.Classes;
 using TetrisAbstract.Enum;
-using TetrisAbstract.EventArgs;
+using TetrisAbstract.GameClasses;
 
 namespace TetrisLogic
 {
@@ -12,23 +10,23 @@ namespace TetrisLogic
         {
             _correction = 0;
         }
-        public event EventHandler<SoundEventArgs> SoundEvent;
+        public event Action RotateEvent;
 
         public byte Correction
         {
             get
             {
-                _correction = _correction == 0 ? (byte) 1 : (byte) 0;
+                _correction = _correction == 0 ? (byte)1 : (byte)0;
                 return _correction;
             }
         }
         public void Turn(GameBoardData gameBoard, Figure figure)
         {
-            if (figure.IsRotatable && FigureTurn(gameBoard,  figure))
+            if (figure.IsRotatable && FigureTurn(gameBoard, figure))
             {
-                if (SoundEvent != null)
+                if (RotateEvent != null)
                 {
-                    SoundEvent(this, new SoundEventArgs(GameSound.Turning));
+                    RotateEvent();
                 }
             }
         }
@@ -36,7 +34,7 @@ namespace TetrisLogic
         private bool FigureTurn(GameBoardData gameBoard, Figure figure)
         {
             bool result = true;
-            int[,] turnedFigure = GetCoordTurnedFigure(figure.Body, gameBoard.Field);
+            byte[,] turnedFigure = GetCoordTurnedFigure(figure.Body, gameBoard.Field);
             if (turnedFigure != null)
             {
                 figure.Body = (byte[,])turnedFigure.Clone();
@@ -48,7 +46,7 @@ namespace TetrisLogic
             return result;
         }
 
-        private int[,] GetCoordTurnedFigure(byte[,] body, TColor[,] gameBoardField)
+        private byte[,] GetCoordTurnedFigure(byte[,] body, TColor[,] gameBoardField)
         {
             // determining of square of the current figure
             int xMin;
@@ -63,7 +61,7 @@ namespace TetrisLogic
 
             // _corr - correction factor for the figure does not move when turning left or right           
 
-            int[,] rotatedFig = new int[FigureData.FigurePoints, 2];
+            int[,] figure = new int[FigureData.FigurePoints, 2];
             for (int i = 0; i < FigureData.FigurePoints; i++)
             {
                 //The reduction of the rotation center to the 0 point of coordinates
@@ -75,14 +73,20 @@ namespace TetrisLogic
                 //shift the center of rotation backwards
                 int x1 = -y + x0;
                 int y1 = x + y0;
-                rotatedFig[i, 0] = x1;
-                rotatedFig[i, 1] = y1;
+                figure[i, 0] = x1;
+                figure[i, 1] = y1;
             }
-            if (!CheckAllowToTurn(rotatedFig, gameBoardField))
+            if (CheckAllowToTurn(figure, gameBoardField))
             {
-                rotatedFig = null;
+                byte[,] returnedFigure = new byte[FigureData.FigurePoints, 2];
+                for (int i = 0; i < FigureData.FigurePoints; i++)
+                {
+                    returnedFigure[i, 0] = (byte)figure[i, 0];
+                    returnedFigure[i, 1] = (byte)figure[i, 1];
+                }
+                return returnedFigure;
             }
-            return rotatedFig;
+            return null;
         }
 
         private bool CheckAllowToTurn(int[,] rotatedFig, TColor[,] gameBoardField)

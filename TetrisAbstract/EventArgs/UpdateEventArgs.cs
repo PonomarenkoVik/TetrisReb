@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract.Enum;
+﻿
+using TetrisAbstract.GameClasses;
 
 namespace TetrisAbstract.EventArgs
 {
@@ -12,9 +8,12 @@ namespace TetrisAbstract.EventArgs
 
         public UpdateEventArgs(GameBoardData boardData, FigureData currFig, FigureData nextFig, float velocity)
         {
-            GameBoardData = boardData;
-            CurrentFigureData = currFig;
-            NextFigureData = nextFig;
+            GameBoardData = (GameBoardData)boardData.Clone();
+            if (currFig != null)
+            {
+                CurrentFigureData = (FigureData)currFig.Clone();
+            }
+            NextFigureData = (FigureData)nextFig.Clone();
             Velocity = velocity;
         }
         public GameBoardData GameBoardData { get; private set; }

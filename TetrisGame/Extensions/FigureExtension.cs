@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisAbstract.Classes;
+﻿using TetrisAbstract.GameClasses;
 using TetrisGame.Classes;
-using FigureData = TetrisAbstract.FigureData;
+using TetrisGame.Data;
+using FigureData = TetrisAbstract.GameClasses.FigureData;
 
 namespace TetrisGame.Extensions
 {
@@ -14,7 +10,7 @@ namespace TetrisGame.Extensions
         public static FigureData ToFigureData(this Figure fig, bool isCurrent)
         {
             FigureData figure = new FigureData();
-            figure.Type = fig.FigureType;
+             figure.Type = fig.FigureType;
             figure.Color = fig.Color;
             figure.Body = fig.Body;
             figure.IsCurrent = isCurrent;
@@ -23,9 +19,8 @@ namespace TetrisGame.Extensions
 
         public static Figure ToFigureData(this FigureData fig)
         {
-            string name = FigureInitialData.FigureNames[(int) fig.Type];
-            bool isTurnable = FigureInitialData.FigureTurnability[(int) fig.Type];
-            Figure figure = new TetrisFigure(name, fig.Type, isTurnable, fig.Color, fig.Body);          
+            bool isTurnable = FigureInitialData.FigureTurnability[(int) (fig.Type - 1)];
+            Figure figure = new TetrisFigure(fig.Type, isTurnable, fig.Color, fig.Body);          
             return figure;
         }
     }
