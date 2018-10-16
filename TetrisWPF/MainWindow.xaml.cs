@@ -185,12 +185,7 @@ namespace TetrisWPF
 
         private void SaveGame_OnClick(object sender, RoutedEventArgs e)
         {
-            //if (_connString == null)
-            //{
-            //    SetConectionOption();
-            //}
             _tetrisGame.Save();
-
         }
 
         private void Options_OnClick(object sender, RoutedEventArgs e)
@@ -227,9 +222,6 @@ namespace TetrisWPF
             OpenGame.IsEnabled = !status;
             SaveGame.IsEnabled = !status;
             Options.IsEnabled = !status;
-
-            //Dispatcher.CurrentDispatcher.Invoke(() => { });
-
         }
 
         #region Showing
