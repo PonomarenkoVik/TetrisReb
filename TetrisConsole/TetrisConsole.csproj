@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{190E51ED-5F49-43FA-BFF8-394F0B628EFA}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{950BF818-D6B9-4335-BAB9-06FF14B65EFA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TetrisLogic</RootNamespace>
-    <AssemblyName>TetrisLogic</AssemblyName>
+    <RootNamespace>TetrisConsole</RootNamespace>
+    <AssemblyName>TetrisConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,10 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
@@ -43,25 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Burner.cs" />
-    <Compile Include="Extensions\ArrayExtension.cs" />
-    <Compile Include="FigureMover.cs" />
-    <Compile Include="FigureRotator.cs" />
-    <Compile Include="Logic.cs" />
+    <Compile Include="Drawer.cs" />
+    <Compile Include="TetrisConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sounder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram2.cd" />
+    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
-    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TetrisAbstract\TetrisAbstract.csproj">
       <Project>{c2a9f078-450d-4b3b-a3f9-430f96eb0658}</Project>
       <Name>TetrisAbstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TetrisDataLayer\TetrisDataLayer.csproj">
+      <Project>{f1818873-caa3-41b7-aed6-308b518843b6}</Project>
+      <Name>TetrisDataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TetrisGame\TetrisGame.csproj">
+      <Project>{f79ebacf-35b7-4cfa-9674-81208298ec26}</Project>
+      <Name>TetrisGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TetrisLogic\TetrisLogic.csproj">
+      <Project>{190e51ed-5f49-43fa-bff8-394f0b628efa}</Project>
+      <Name>TetrisLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

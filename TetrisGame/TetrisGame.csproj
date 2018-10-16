@@ -42,7 +42,6 @@
     <Compile Include="Classes\FigureCreator.cs" />
     <Compile Include="Data\FigureInitialData.cs" />
     <Compile Include="Data\LevelData.cs" />
-    <Compile Include="Classes\TetrisFigure.cs" />
     <Compile Include="Extensions\FigureExtension.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

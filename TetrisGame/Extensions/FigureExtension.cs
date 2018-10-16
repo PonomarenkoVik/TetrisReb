@@ -20,7 +20,7 @@ namespace TetrisGame.Extensions
         public static Figure ToFigureData(this FigureData fig)
         {
             bool isTurnable = FigureInitialData.FigureTurnability[(int) (fig.Type - 1)];
-            Figure figure = new TetrisFigure(fig.Type, isTurnable, fig.Color, fig.Body);          
+            Figure figure = new Figure(fig.Type, isTurnable, fig.Color, fig.Body);          
             return figure;
         }
     }

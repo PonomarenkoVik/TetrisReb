@@ -12,7 +12,7 @@ namespace TetrisGame.Classes
         {                   
             int figureType = Rnd.Next(1, FigureInitialData.BodyFigures.Length + 1);
             byte color = (byte)Rnd.Next(1, TetrisInitialData.NumberOfColors + 1);
-            Figure figure = new TetrisFigure((FigureTypes)figureType, FigureInitialData.FigureTurnability[figureType - 1], (TColor)color, (byte[,])FigureInitialData.BodyFigures[figureType - 1].Clone());
+            Figure figure = new Figure((FigureTypes)figureType, FigureInitialData.FigureTurnability[figureType - 1], (TColor)color, (byte[,])FigureInitialData.BodyFigures[figureType - 1].Clone());
             return figure;
         }
 

@@ -3,10 +3,9 @@ using TetrisAbstract.Enum;
 
 namespace TetrisAbstract.GameClasses
 {
-    public abstract class Figure : ICloneable
+    public class Figure : ICloneable
     {
-
-        protected Figure(FigureTypes type, bool isRotatable, TColor color, byte[,] body)
+        public Figure(FigureTypes type, bool isRotatable, TColor color, byte[,] body)
         {
             Color = color;
             _body = (byte[,])body.Clone();

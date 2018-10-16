@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TetrisLogic.Burner">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <Members>
+      <Field Name="_height" Hidden="true" />
+      <Field Name="_width" Hidden="true" />
+      <Method Name="Burner" Hidden="true" />
+      <Method Name="BurnLine" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAEAAAAAAAABAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Burner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TetrisLogic.Logic" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="0.75" Width="1.5" />
+    <Members>
+      <Field Name="_burner" Hidden="true" />
+      <Field Name="_mover" Hidden="true" />
+      <Field Name="_rotator" Hidden="true" />
+      <Method Name="OnBurnedHandler" Hidden="true" />
+      <Method Name="OnBurnHandler" Hidden="true" />
+      <Method Name="OnExchangeFigureHandler" Hidden="true" />
+      <Method Name="OnGOverHandler" Hidden="true" />
+      <Method Name="OnLevelUpHandler" Hidden="true" />
+      <Method Name="OnRotateHandler" Hidden="true" />
+      <Method Name="OnStepHandler" Hidden="true" />
+      <Method Name="Subscribe" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAhAAAAAAIAAACAIEAAKKgCAQAACAAAAAAAACAAQQAA=</HashCode>
+      <FileName>Logic.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TetrisLogic.FigureRotator">
+    <Position X="4" Y="0.75" Width="1.5" />
+    <Members>
+      <Field Name="_correction" Hidden="true" />
+      <Method Name="CheckAllowToTurn" Hidden="true" />
+      <Property Name="Correction" Hidden="true" />
+      <Method Name="DeterminCoordSquareFig" Hidden="true" />
+      <Method Name="FigureRotator" Hidden="true" />
+      <Method Name="FigureTurn" Hidden="true" />
+      <Method Name="GetCoordTurnedFigure" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFIAAAAAKAAAQACAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>FigureRotator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TetrisLogic.FigureMover">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <Members>
+      <Method Name="CheckAllowedRegion" Hidden="true" />
+      <Method Name="CheckFreeArea" Hidden="true" />
+      <Method Name="CheckPermissionToMove" Hidden="true" />
+      <Method Name="CheckScoreLevelUp" Hidden="true" />
+      <Method Name="CopyCurrentFigureToField" Hidden="true" />
+      <Method Name="FigureMove" Hidden="true" />
+      <Method Name="GetBoundaryFigurePoints" Hidden="true" />
+      <Method Name="GetDeltaByDirection" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAcAAIAAAEAAAAABAAIhAGAAQAAAAAAAAAQA=</HashCode>
+      <FileName>FigureMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
